@@ -19,14 +19,14 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
             $table->string('gender');
             $table->string('phone')->unique();
+            $table->string('mrn')->unique();
             $table->string('profile_image');
             $table->string('status')->default('active');
             $table->bigInteger('role_id')->unsigned();
             $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade')->onUpdate('cascade');
+            $table->rememberToken();
             $table->timestamps();
         });
     }
