@@ -87,7 +87,18 @@ class ApiController extends Controller
     public function fetchGroups($user_id)
     {
 
-        $groups = Group::join('group_members', 'groups.id', '=', 'group_members.group_id')->where('group_members.user_id', $user_id)->where('group_members.status', 'active')->where('groups.status', 'active')->select('groups.*')->get();
+        //find user by user_id
+        $user = User::find($user_id);
+
+        //check if user role id is 1
+        if ($user->role_id == 1) {
+            //fetch all groups
+            $groups = Group::all();
+        } else {
+            //fetch groups where user is a member
+            $groups = Group::join('group_members', 'groups.id', '=', 'group_members.group_id')->where('group_members.user_id', $user_id)->where('group_members.status', 'active')->where('groups.status', 'active')->select('groups.*')->get();
+        }
+
 
         return response()->json([
             'data' => $groups
