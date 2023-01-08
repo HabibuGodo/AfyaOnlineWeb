@@ -16,7 +16,7 @@ class NewsFeed extends Model
         'title',
         'description',
         'user_id',
-        'image'
+        'image',
     ];
 
     //user

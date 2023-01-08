@@ -179,13 +179,24 @@ class ApiController extends Controller
         $request->validate([
             'title' => 'required',
             'description' => 'required',
-            'image' => 'required',
+            'image' => 'required|mimes:jpeg,jpg,png|max:10000',
         ]);
+
+        // gete file extension
+        $fileExtension = request()->image->getClientOriginalExtension();
+
+        // get file name
+        $fileName = time() . '.' . $fileExtension;
+
+        // store file
+        request()->image->storeAs('public/newsFeed_photos', $fileName);
+        // srequest store publicly
+        $fileUrl = 'storage/newsFeed_photos/' . $fileName;
 
         $feed = new NewsFeed();
         $feed->title = $request->title;
         $feed->description = $request->description;
-        $feed->image = $request->image;
+        $feed->image = $fileUrl;
         $feed->user_id = $request->userId;
         $feed->save();
         return response()->json([
@@ -194,6 +205,18 @@ class ApiController extends Controller
             'feed' => $feed
         ]);
     }
+
+    //fetch news feeds
+    public function fetchFeeds()
+    {
+        $feeds = NewsFeed::all();
+        return response()->json([
+            'status' => 'success',
+            'data' => $feeds
+        ], 200);
+    }
+
+    //delete news feed
 
 
 

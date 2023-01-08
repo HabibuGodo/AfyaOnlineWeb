@@ -37,3 +37,6 @@ Route::post('/sendMessages', [ApiController::class, 'createMessage']);
 
 //go to create feed 
 Route::post('/createFeed', [ApiController::class, 'createFeed']);
+
+//go to fetch news feed
+Route::get('/newsfeed', [ApiController::class, 'fetchNewsFeed']);
