@@ -44,8 +44,6 @@ class ApiController extends Controller
     }
 
 
-
-
     //  check OTP
     public function checkOTP()
     {
@@ -85,8 +83,26 @@ class ApiController extends Controller
         }
     }
 
-    //fetch all groups belong to user id
+    //create group
+    public function createGroup(Request $request)
+    {
+        //validate
+        $request->validate([
+            'name' => 'required',
+        ]);
 
+        $group = new Group();
+        $group->name = $request->name;
+        $group->save();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Group created successfully',
+            'group' => $group,
+        ]);
+    }
+
+
+    //fetch all groups belong to user id
     public function fetchGroups($user_id)
     {
 

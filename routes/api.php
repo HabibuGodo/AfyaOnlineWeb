@@ -27,6 +27,9 @@ Route::post('/send_otp', [ApiController::class, 'sendOTP']);
 // chek otp
 Route::post('/check_otp', [ApiController::class, 'checkOTP']);
 
+//go to create group
+Route::post('/create_group', [ApiController::class, 'createGroup']);
+
 // go to fetchgroups
 Route::get('/mygroups/{id}', [ApiController::class, 'fetchGroups']);
 //go to fetchMessages
