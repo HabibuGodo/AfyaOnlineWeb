@@ -207,7 +207,7 @@ class ApiController extends Controller
     }
 
     //fetch news feeds
-    public function fetchFeeds()
+    public function fetchNewsFeeds()
     {
         $feeds = NewsFeed::all();
         return response()->json([
