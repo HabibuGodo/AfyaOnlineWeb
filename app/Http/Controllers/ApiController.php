@@ -120,9 +120,9 @@ class ApiController extends Controller
     public function createMessage(Request $request)
     {
         //validate
-        $request->validate([
-            'message' => 'required',
-        ]);
+        // $request->validate([
+        //     'message' => 'required',
+        // ]);
 
         //insert data into notification badge with user id in array student except current user
         $members =  GroupMember::where('group_id',  $request->group_id)->where('user_id', '!=', $request->sender_id)->get();
