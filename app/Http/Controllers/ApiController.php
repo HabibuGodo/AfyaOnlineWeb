@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
-
+use App\Models\Group;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -81,6 +80,18 @@ class ApiController extends Controller
                 'message' => 'OTP incorrect',
             ]);
         }
+    }
+
+    //fetch all groups belong to user id
+
+    public function fetchGroups($user_id)
+    {
+
+        $groups = Group::join('group_members', 'groups.id', '=', 'group_members.group_id')->where('group_members.user_id', $user_id)->where('group_members.status', 'active')->where('groups.status', 'active')->select('groups.*')->get();
+
+        return response()->json([
+            'data' => $groups
+        ], 200);
     }
 
 
