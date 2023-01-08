@@ -164,7 +164,7 @@ class ApiController extends Controller
         if ($group->status == 'active') {
             //fetch all messages or by created time
 
-            $messages = Message::where('group_id', $group_id)->orderBy('created_at', "desc")->get();
+            $messages = Message::where('group_id', $group_id)->get();
             return response()->json([
                 'data' => $messages
             ], 200);
@@ -209,7 +209,7 @@ class ApiController extends Controller
     //fetch news feeds
     public function fetchNewsFeeds()
     {
-        $feeds = NewsFeed::all();
+        $feeds = NewsFeed::orderBy('created_at', 'desc')->get();
         return response()->json([
             'status' => 'success',
             'data' => $feeds
