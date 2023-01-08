@@ -12,7 +12,7 @@ class Group extends Model
 
     protected $fillable = [
         'group_name',
-        'group_image',
+        'profile_image',
         'status'
     ];
 

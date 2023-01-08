@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('gender');
             $table->string('phone')->unique();
             $table->string('mrn')->unique();
-            $table->string('profile_image');
+            $table->string('profile_image')->default('img/avatars/student.png');
             $table->string('status')->default('active');
             $table->bigInteger('role_id')->unsigned();
             $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade')->onUpdate('cascade');
