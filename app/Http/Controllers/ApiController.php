@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
+use App\Models\GroupMember;
+use App\Models\Message;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -103,6 +105,69 @@ class ApiController extends Controller
         return response()->json([
             'data' => $groups
         ], 200);
+    }
+
+    //Send message
+    public function sendMessage(Request $request)
+    {
+        //validate
+
+
+
+    }
+
+    //create chat message
+    public function createMessage(Request $request)
+    {
+        //validate
+        $request->validate([
+            'message' => 'required',
+        ]);
+
+        //insert data into notification badge with user id in array student except current user
+        $members =  GroupMember::where('group_id',  $request->group_id)->where('user_id', '!=', $request->sender_id)->get();
+        //fetch group members belong to group
+
+
+        $members_ids = [];
+        $receiver_read = [];
+        foreach ($members as $member) {
+            array_push($members_ids, ['id' => $$member->user_id]);
+            array_push($receiver_read, ['id' => $$member->user_id]);
+        }
+
+        $message = new Message();
+        $message->group_id = $request->group_id;
+        $message->sender_id = $request->sender_id;
+        $message->receiver_id = json_encode($members_ids);
+        $message->receiver_read = json_encode($receiver_read);
+        $message->message = $request->message;
+        $message->save();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Message sent successfully',
+        ]);
+    }
+
+
+
+    //fetch all messages belong to group id
+    public function fetchMessages($group_id)
+    {
+
+        //find group by group_id
+        $group = Group::find($group_id);
+
+        //check if group is active
+        if ($group->status == 'active') {
+            //fetch all messages or by created time
+
+            $messages = Message::where('group_id', $group_id)->orderBy('created_at', "desc")->get();
+            return response()->json([
+                'data' => $messages
+            ], 200);
+        }
     }
 
 

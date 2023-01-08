@@ -11,19 +11,18 @@ class Message extends Model
     protected $table = "messages";
 
     protected $fillable = [
-        'conversation_id',
+        'group_id',
         'sender_id',
         'receiver_id',
         'message',
-        'type',
         'sender_read',
         'receiver_read',
         'status',
     ];
 
-    public function conversation()
+    public function group()
     {
-        return $this->belongsTo(Conversation::class);
+        return $this->belongsTo(Group::class);
     }
 
     public function sender()
