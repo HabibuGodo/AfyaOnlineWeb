@@ -92,7 +92,7 @@ class ApiController extends Controller
         ]);
 
         $group = new Group();
-        $group->name = $request->name;
+        $group->group_name = $request->name;
         $group->save();
         return response()->json([
             'status' => 'success',
