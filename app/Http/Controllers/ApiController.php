@@ -246,49 +246,47 @@ class ApiController extends Controller
         // generate OTP
         $otp = rand(1000, 9999);
 
-        $otp = 1234;
+        // $otp = 1234;
 
         $created_at = Carbon::now();
 
         // one minute expire
         $expire = Carbon::now()->addMinute(1);
 
-        // $message = "Your Verification PIN is: " . $otp;
+        $message = "Your Verification PIN is: " . $otp;
 
-        // $curl = curl_init();
-        // curl_setopt_array($curl, array(
-        //     CURLOPT_URL => 'https://19gr61.api.infobip.com/sms/2/text/advanced',
-        //     CURLOPT_RETURNTRANSFER => true,
-        //     CURLOPT_ENCODING => '',
-        //     CURLOPT_MAXREDIRS => 10,
-        //     CURLOPT_TIMEOUT => 0,
-        //     CURLOPT_FOLLOWLOCATION => true,
-        //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        //     CURLOPT_CUSTOMREQUEST => 'POST',
-        //     CURLOPT_POSTFIELDS => '{
-        //    "messages":[
-        //        {
-        //            "from":"SmartUni",
-        //            "destinations":[{"to":"' . $phoneFormatted . '"}],
-        //            "text":"' . $message . '"
-        //        }
-        //    ]
-        //    }',
-        //     CURLOPT_HTTPHEADER => array(
-        //         'Authorization: App 01dcedd5bff5aca91fd602b33b37fa2b-f2012b44-34c8-49ab-aee5-f3481bb74cf2',
-        //         'Content-Type: application/json',
-        //         'Accept: application/json'
-        //     ),
-        // ));
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://19gr61.api.infobip.com/sms/2/text/advanced',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => '{
+           "messages":[
+               {
+                   "from":"SmartUni",
+                   "destinations":[{"to":"' . $phoneFormatted . '"}],
+                   "text":"' . $message . '"
+               }
+           ]
+           }',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: App 01dcedd5bff5aca91fd602b33b37fa2b-f2012b44-34c8-49ab-aee5-f3481bb74cf2',
+                'Content-Type: application/json',
+                'Accept: application/json'
+            ),
+        ));
 
-        // $response = curl_exec($curl);
-        // // dd($response);
-        // //  var_dump($response);
-        // curl_close($curl);
+        $response = curl_exec($curl);
+        // dd($response);
+        //  var_dump($response);
+        curl_close($curl);
 
         $check_phone = OTP::where('phone', $phone)->first();
-
-
 
         if ($check_phone) {
             // update OTP
