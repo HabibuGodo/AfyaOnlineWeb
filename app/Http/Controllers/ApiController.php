@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Group;
 use App\Models\GroupMember;
 use App\Models\Message;
+use App\Models\NewsFeed;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -168,6 +169,30 @@ class ApiController extends Controller
                 'data' => $messages
             ], 200);
         }
+    }
+
+
+    //crete news feed
+    public function createFeed(Request $request)
+    {
+        //validate
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'image' => 'required',
+        ]);
+
+        $feed = new NewsFeed();
+        $feed->title = $request->title;
+        $feed->description = $request->description;
+        $feed->image = $request->image;
+        $feed->user_id = $request->userId;
+        $feed->save();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Feed created successfully',
+            'feed' => $feed
+        ]);
     }
 
 

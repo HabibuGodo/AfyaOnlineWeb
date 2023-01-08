@@ -34,3 +34,6 @@ Route::get('/mygroups/{id}/messages', [ApiController::class, 'fetchMessages']);
 
 //go to create message  
 Route::post('/sendMessages', [ApiController::class, 'createMessage']);
+
+//go to create feed 
+Route::post('/createFeed', [ApiController::class, 'createFeed']);
