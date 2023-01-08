@@ -132,8 +132,8 @@ class ApiController extends Controller
         $members_ids = [];
         $receiver_read = [];
         foreach ($members as $member) {
-            array_push($members_ids, ['id' => $$member->user_id]);
-            array_push($receiver_read, ['id' => $$member->user_id]);
+            array_push($members_ids, ['id' => $member->user_id]);
+            array_push($receiver_read, ['id' => $member->user_id]);
         }
 
         $message = new Message();
