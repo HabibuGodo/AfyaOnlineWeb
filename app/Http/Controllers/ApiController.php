@@ -190,7 +190,7 @@ class ApiController extends Controller
         })->where(function ($query) use ($receiver_id) {
             $query->where('sender_id', $receiver_id)
                 ->orWhere('receiver_id', $receiver_id);
-        })->orderBy('created_at', 'desc')->get();
+        })->get();
 
 
         return response()->json([
@@ -204,8 +204,16 @@ class ApiController extends Controller
         //fetch all conversations
         $conversations = Conversation::where('sender_id', $my_id)->orWhere('receiver_id', $my_id)->orderBy('last_message_time', 'desc')->get();
 
+        foreach ($conversations as $conversation) {
+            if ($conversation->sender_id == $my_id) {
+                $user = User::where('id', $conversation->receiver_id)->first();
+            } else {
+                $user = User::where('id', $conversation->sender_id)->first();
+            }
+            $conversation->receiver_name = $user->name;
+        }
         return response()->json([
-            'data' => $conversations
+            'data' => $conversation
         ], 200);
     }
 
