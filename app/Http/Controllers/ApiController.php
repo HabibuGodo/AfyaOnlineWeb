@@ -141,15 +141,16 @@ class ApiController extends Controller
     {
         // get the message
         $message = request('message');
+        $senderId = request('sender_id');
+        $receiverId = request('receiver_id');
 
         // check if conversation exists
-        $conversation = Conversation::where(function ($query) {
-            $query->where('sender_id', request('sender_id'))
+        $conversation = Conversation::where(function ($query) use ($senderId) {
+            $query->where('sender_id', $senderId)
                 ->orWhere('receiver_id', request('sender_id'));
-        })->where(function ($query) {
-
-            $query->where('sender_id', request('receiver_id'))
-                ->orWhere('receiver_id', request('receiver_id'));
+        })->where(function ($query) use ($receiverId) {
+            $query->where('sender_id', $receiverId)
+                ->orWhere('receiver_id', $receiverId);
         })->first();
         // check if conversation is null
         if ($conversation == null) {
@@ -183,10 +184,10 @@ class ApiController extends Controller
         //fetch all messages
         // $messages = MessagesSingle::where('conversation_id', $convo_id)->orderBy('created_at', 'desc')->get();
 
-        $messages = MessagesSingle::where(function ($query, $my_id) {
+        $messages = MessagesSingle::where(function ($query) use ($my_id) {
             $query->where('sender_id', $my_id)
                 ->orWhere('receiver_id', $my_id);
-        })->where(function ($query, $receiver_id) {
+        })->where(function ($query) use ($receiver_id) {
             $query->where('sender_id', $receiver_id)
                 ->orWhere('receiver_id', $receiver_id);
         })->orderBy('created_at', 'desc')->get();
