@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Conversation;
 use App\Models\Group;
 use App\Models\GroupMember;
 use App\Models\Message;
+use App\Models\MessagesSingle;
 use App\Models\NewsFeed;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -125,21 +127,95 @@ class ApiController extends Controller
     }
 
     //Send message
-    public function sendMessage(Request $request)
+    public function fetchUsers($my_id)
     {
         //validate
-
-
-
+        $user = User::where('id', '!=', $my_id)->get();
+        return response()->json([
+            'data' => $user
+        ], 200);
     }
+
+    // fucion send message
+    public function sendMessageSingle()
+    {
+        // get the message
+        $message = request('message');
+
+        // check if conversation exists
+        $conversation = Conversation::where(function ($query) {
+            $query->where('sender_id', request('sender_id'))
+                ->orWhere('receiver_id', request('sender_id'));
+        })->where(function ($query) {
+
+            $query->where('sender_id', request('receiver_id'))
+                ->orWhere('receiver_id', request('receiver_id'));
+        })->first();
+        // check if conversation is null
+        if ($conversation == null) {
+            // create new conversation
+            $conversation = Conversation::create([
+                'sender_id' => request('sender_id'),
+                'receiver_id' => request('receiver_id'),
+            ]);
+        }
+        // create new message
+        MessagesSingle::create([
+            'conversation_id' => $conversation->id,
+            'sender_id' => request('sender_id'),
+            'receiver_id' => request('receiver_id'),
+            'message' => $message,
+        ]);
+        // update the last message time
+        $conversation->last_message_time = now();
+        $conversation->save();
+        // reset the message
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Message sent successfully',
+        ]);
+    }
+
+    //fetch all messages of specific convo
+    public function fetchMessagesSingleInConvo($convo_id)
+    {
+        //fetch all messages
+        $messages = MessagesSingle::where('conversation_id', $convo_id)->orderBy('created_at', 'desc')->get();
+
+        return response()->json([
+            'data' => $messages
+        ], 200);
+    }
+
+    //fetch all conversations
+    public function fetchConversations($my_id)
+    {
+        //fetch all conversations
+        $conversations = Conversation::where('sender_id', $my_id)->orWhere('receiver_id', $my_id)->orderBy('last_message_time', 'desc')->get();
+
+        return response()->json([
+            'data' => $conversations
+        ], 200);
+    }
+
+    //update messages
+    public function updateMessagesSingleInConvoRead($convo_id, $my_id, $other_user_id)
+    {
+        // update read status to 1
+        MessagesSingle::where('conversation_id', $convo_id)->where('sender_id', $other_user_id)->where('receiver_id', $my_id)->update(['receiver_read' => 1]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Message updated successfully',
+        ]);
+    }
+
+
 
     //create chat message
     public function createMessage(Request $request)
     {
-        //validate
-        // $request->validate([
-        //     'message' => 'required',
-        // ]);
 
         //insert data into notification badge with user id in array student except current user
         $members =  GroupMember::where('group_id',  $request->group_id)->where('user_id', '!=', $request->sender_id)->get();

@@ -43,3 +43,18 @@ Route::post('/createFeed', [ApiController::class, 'createFeed']);
 
 //go to fetch news feed
 Route::get('/newsfeed', [ApiController::class, 'fetchNewsFeeds']);
+
+//go to fetch users     
+Route::get('/users/{id}', [ApiController::class, 'fetchUsers']);
+
+//go to fetch conversation  
+Route::get('/conversations/{id}', [ApiController::class, 'fetchConversations']);
+
+//go to fetch messages          
+Route::get('/messagesInbox/{id}', [ApiController::class, 'fetchMessagesSingleInConvo']);
+
+//go to updateMessagesSingleInConvoRead     
+Route::post('/readMessage/{convo_id}/{my_id}/{other_user}', [ApiController::class, 'updateMessagesSingleInConvoRead']);
+
+//go to sendMessageSingle
+Route::post('/sendMessageSingle', [ApiController::class, 'sendMessageSingle']);
