@@ -202,6 +202,7 @@ class ApiController extends Controller
     public function fetchConversations($my_id)
     {
         //fetch all conversations
+        $allConvo = [];
         $conversations = Conversation::where('sender_id', $my_id)->orWhere('receiver_id', $my_id)->orderBy('last_message_time', 'desc')->get();
 
         foreach ($conversations as $conversation) {
@@ -211,9 +212,11 @@ class ApiController extends Controller
                 $user = User::where('id', $conversation->sender_id)->first();
             }
             $conversation->receiver_name = $user->name;
+
+            array_push($allConvo, $conversation);
         }
         return response()->json([
-            'data' => $conversation
+            'data' => $allConvo
         ], 200);
     }
 
