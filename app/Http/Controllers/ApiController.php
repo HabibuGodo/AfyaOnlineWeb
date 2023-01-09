@@ -178,10 +178,19 @@ class ApiController extends Controller
     }
 
     //fetch all messages of specific convo
-    public function fetchMessagesSingleInConvo($convo_id)
+    public function fetchMessagesSingleInConvo($my_id, $receiver_id)
     {
         //fetch all messages
-        $messages = MessagesSingle::where('conversation_id', $convo_id)->orderBy('created_at', 'desc')->get();
+        // $messages = MessagesSingle::where('conversation_id', $convo_id)->orderBy('created_at', 'desc')->get();
+
+        $messages = MessagesSingle::where(function ($query, $my_id) {
+            $query->where('sender_id', $my_id)
+                ->orWhere('receiver_id', $my_id);
+        })->where(function ($query, $receiver_id) {
+            $query->where('sender_id', $receiver_id)
+                ->orWhere('receiver_id', $receiver_id);
+        })->orderBy('created_at', 'desc')->get();
+
 
         return response()->json([
             'data' => $messages

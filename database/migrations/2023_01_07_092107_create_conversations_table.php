@@ -19,16 +19,12 @@ return new class extends Migration
             $table->unsignedBigInteger('sender_id');
             // receiver id
             $table->unsignedBigInteger('receiver_id');
-            //group id
-            $table->unsignedBigInteger('group_id')->nullable();
             // message
             // reference on sender id
             $table->foreign('sender_id')->references('id')->on('users');
 
             // reference on receiver id
             $table->foreign('receiver_id')->references('id')->on('users');
-            // reference on group id
-            $table->foreign('group_id')->references('id')->on('groups');
 
             // timestamp latmessage
             $table->timestamp('last_message_time')->nullable();
