@@ -51,7 +51,7 @@ Route::get('/users/{id}', [ApiController::class, 'fetchUsers']);
 Route::get('/conversations/{id}', [ApiController::class, 'fetchConversations']);
 
 //go to fetch messages          
-Route::get('/messagesInbox/{myid}/{receiverid}', [ApiController::class, 'fetchMessagesSingleInConvo']);
+Route::get('/messagesInbox/{my_id}/{receiver_id}', [ApiController::class, 'fetchMessagesSingleInConvo']);
 
 //go to updateMessagesSingleInConvoRead     
 Route::post('/readMessage/{convo_id}/{my_id}/{other_user}', [ApiController::class, 'updateMessagesSingleInConvoRead']);
