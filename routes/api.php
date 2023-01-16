@@ -35,6 +35,9 @@ Route::get('/mygroups/{id}', [ApiController::class, 'fetchGroups']);
 //go to fetchMessages
 Route::get('/mygroups/{id}/messages', [ApiController::class, 'fetchMessages']);
 
+//go to allMygroupsMessagess
+Route::get('/allMygroupsMessagess/{id}', [ApiController::class, 'fetchAllGroupsMessages']);
+
 //go to create message  
 Route::post('/sendMessages', [ApiController::class, 'createMessage']);
 

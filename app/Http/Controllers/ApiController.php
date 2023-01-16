@@ -294,10 +294,8 @@ class ApiController extends Controller
     //fetch all messages belong to group id
     public function fetchMessages($group_id)
     {
-
         //find group by group_id
         $group = Group::find($group_id);
-
         //check if group is active
         if ($group->status == 'active') {
             //fetch all messages or by created time
@@ -307,6 +305,54 @@ class ApiController extends Controller
                 'data' => $messages
             ], 200);
         }
+    }
+
+    //fetch all groups message of as specific user
+    public function fetchAllGroupsMessages($user_id)
+    {
+        $allGroupsMessages = [];
+        $messages = Message::all();
+        //for each message check if user id is in sender or receiver
+        foreach ($messages as $message) {
+            $sender_id = $message->sender_id;
+            $receiver_id = $message->receiver_id;
+            $receiver_read = $message->receiver_read;
+            //check if user id is in receiver id
+            $receiver_id = json_decode($receiver_id);
+            $receiver_read = json_decode($receiver_read);
+            //check if user id is in sender id
+            if ($sender_id == $user_id) {
+                foreach ($receiver_read as $key => $value) {
+                    if ($receiver_read[$key]->id == $user_id) {
+                        $message->receiver_read = 0;
+                        array_push($allGroupsMessages, $message);
+                    } else {
+                        $message->receiver_read = 1;
+                        array_push($allGroupsMessages, $message);
+                    }
+                }
+            } else {
+                foreach ($receiver_id as $key => $value) {
+                    if ($value->id == $user_id) {
+                        //check if user id is in receiver read
+                        foreach ($receiver_read as $key => $value) {
+                            if ($receiver_read[$key]->id == $user_id) {
+                                $message->receiver_read = 0;
+                                array_push($allGroupsMessages, $message);
+                            } else {
+                                $message->receiver_read = 1;
+                                array_push($allGroupsMessages, $message);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        return response()->json([
+            'data' => $allGroupsMessages
+        ], 200);
     }
 
 
