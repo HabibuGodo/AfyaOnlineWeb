@@ -306,9 +306,9 @@ class ApiController extends Controller
             foreach ($messages as $message) {
                 $receiver_read = json_decode($message->receiver_read);
                 if ($receiver_read == []) {
-                    $message->read = 0;
+                    $message->receiver_read = 0;
                 } else {
-                    $message->read = 1;
+                    $message->receiver_read = 1;
                 }
             }
             // if ($messages->receiver_read == []) {
