@@ -206,17 +206,29 @@ class ApiController extends Controller
         $conversations = Conversation::where('sender_id', $my_id)->orWhere('receiver_id', $my_id)->orderBy('last_message_time', 'desc')->get();
 
         foreach ($conversations as $conversation) {
+            $lasmessage = Message::where('conversation_id', $conversation->id)->orderBy("id", "desc")->first();
+            //count unread message for user my_id
+            $totalUnread = Message::where('conversation_id', $conversation->id)->where('receiver_id', $my_id)->where('receiver_read', "No")->count();
+
             if ($conversation->sender_id == $my_id) {
                 $user = User::where('id', $conversation->receiver_id)->first();
             } else {
                 $user = User::where('id', $conversation->sender_id)->first();
             }
             $conversation->receiver_name = $user->name;
+            $conversation->totalUnread = $totalUnread;
+            $conversation->last_message = $lasmessage->message;
+            $conversation->lastMsgReceiverId = $lasmessage->receiver_id;
+            $conversation->receiver_profile = $user->profile;
+            $conversation->readStatus = $lasmessage->receiver_read;
 
             array_push($allConvo, $conversation);
         }
+        $totalUnreadAllConvo = Message::where('receiver_id', $my_id)->where('receiver_read', "No")->count();
+
         return response()->json([
-            'data' => $allConvo
+            'data' => $allConvo,
+            'totalUnreadAllConvo' => $totalUnreadAllConvo
         ], 200);
     }
 
