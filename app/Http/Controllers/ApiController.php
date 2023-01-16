@@ -236,7 +236,7 @@ class ApiController extends Controller
     public function fetchAllMessages($my_id)
     {
         //fetch all messages
-        $messages = Message::where('sender_id', $my_id)
+        $messages = MessagesSingle::where('sender_id', $my_id)
             ->orWhere('receiver_id', $my_id)->get();
 
 
