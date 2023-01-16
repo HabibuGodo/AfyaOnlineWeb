@@ -322,27 +322,24 @@ class ApiController extends Controller
             $receiver_read = json_decode($receiver_read);
             //check if user id is in sender id
             if ($sender_id == $user_id) {
-                foreach ($receiver_read as $key => $value) {
-                    if ($receiver_read[$key]->id == $user_id) {
-                        $message->receiver_read = 0;
-                        array_push($allGroupsMessages, $message);
-                    } else {
-                        $message->receiver_read = 1;
-                        array_push($allGroupsMessages, $message);
-                    }
+
+                if ($receiver_read == []) {
+                    $message->receiver_read = 0;
+                    array_push($allGroupsMessages, $message);
+                } else {
+                    $message->receiver_read = 1;
+                    array_push($allGroupsMessages, $message);
                 }
             } else {
                 foreach ($receiver_id as $key => $value) {
                     if ($value->id == $user_id) {
                         //check if user id is in receiver read
-                        foreach ($receiver_read as $key => $value) {
-                            if ($receiver_read[$key]->id == $user_id) {
-                                $message->receiver_read = 0;
-                                array_push($allGroupsMessages, $message);
-                            } else {
-                                $message->receiver_read = 1;
-                                array_push($allGroupsMessages, $message);
-                            }
+                        if ($receiver_read == []) {
+                            $message->receiver_read = 0;
+                            array_push($allGroupsMessages, $message);
+                        } else {
+                            $message->receiver_read = 1;
+                            array_push($allGroupsMessages, $message);
                         }
                     }
                 }
