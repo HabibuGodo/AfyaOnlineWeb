@@ -232,6 +232,19 @@ class ApiController extends Controller
         ], 200);
     }
 
+    //Fetch all messages for logged in user
+    public function fetchAllMessages($my_id)
+    {
+        //fetch all messages
+        $messages = Message::where('sender_id', $my_id)
+            ->orWhere('receiver_id', $my_id)->get();
+
+
+        return response()->json([
+            'data' => $messages
+        ], 200);
+    }
+
     //update messages
     public function updateMessagesSingleInConvoRead($convo_id, $my_id, $other_user_id)
     {
