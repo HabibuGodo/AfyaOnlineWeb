@@ -301,11 +301,8 @@ class ApiController extends Controller
             //fetch all messages or by created time
 
             $messages = Message::where('group_id', $group_id)->get();
-            if ($messages->receiver_read == []) {
-                $messages->receiver_read = 0;
-            } else {
-                $messages->receiver_read = 1;
-            }
+            //check if receiver read is empty
+
             return response()->json([
                 'data' => $messages
             ], 200);
