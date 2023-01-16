@@ -302,6 +302,15 @@ class ApiController extends Controller
 
             $messages = Message::where('group_id', $group_id)->get();
             //check if receiver read is empty
+
+            foreach ($messages as $message) {
+                $receiver_read = json_decode($message->receiver_read);
+                if ($receiver_read == []) {
+                    $message->read = 0;
+                } else {
+                    $message->read = 1;
+                }
+            }
             // if ($messages->receiver_read == []) {
             //     $messages->read = 0;
             // } else {
@@ -309,7 +318,7 @@ class ApiController extends Controller
             // }
 
             return response()->json([
-                'data' => $$messages->receiver_read
+                'data' => $messages
             ], 200);
         }
     }
