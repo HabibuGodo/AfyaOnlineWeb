@@ -302,14 +302,14 @@ class ApiController extends Controller
 
             $messages = Message::where('group_id', $group_id)->get();
             //check if receiver read is empty
-            if ($messages->receiver_read == []) {
-                $messages->read = 0;
-            } else {
-                $messages->read = 1;
-            }
+            // if ($messages->receiver_read == []) {
+            //     $messages->read = 0;
+            // } else {
+            //     $messages->read = 1;
+            // }
 
             return response()->json([
-                'data' => $messages
+                'data' => $$messages->receiver_read
             ], 200);
         }
     }
