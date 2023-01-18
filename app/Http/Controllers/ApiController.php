@@ -184,7 +184,7 @@ class ApiController extends Controller
     //save selected users in groupmember table
     public function saveGroupMembers(Request $request)
     {
-        $group_id = $request->group_id;
+        $group_id = $request->groupId;
         $selectedUsers = json_decode($request->selectedUsers);
 
 
