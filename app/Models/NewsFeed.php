@@ -17,6 +17,7 @@ class NewsFeed extends Model
         'description',
         'user_id',
         'image',
+        'file',
         'created_at',
         'updated_at',
     ];
@@ -26,9 +27,4 @@ class NewsFeed extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-
-    
-    
-    
-    
 }

@@ -447,6 +447,7 @@ class ApiController extends Controller
             'title' => 'required',
             'description' => 'required',
             'image' => 'required|mimes:jpeg,jpg,png|max:10000',
+            'file' => 'mimes:pdf,doc,docx,ppt,pptx,txt,xls,xlsx|max:5048',
         ]);
 
         // gete file extension
@@ -460,10 +461,17 @@ class ApiController extends Controller
         // srequest store publicly
         $fileUrl = 'storage/newsFeed_photos/' . $fileName;
 
+        $attachmentName = request()->file->getClientOriginalName();
+        $uploadedAttName = $attachmentName;
+
+        request()->file('file')->storeAs('public/newsFeed_files', $uploadedAttName);
+        $filePath = 'storage/newsFeed_files/'  . $uploadedAttName;
+
         $feed = new NewsFeed();
         $feed->title = $request->title;
         $feed->description = $request->description;
         $feed->image = $fileUrl;
+        $feed->file = $filePath;
         $feed->user_id = $request->userId;
         $feed->save();
         return response()->json([
