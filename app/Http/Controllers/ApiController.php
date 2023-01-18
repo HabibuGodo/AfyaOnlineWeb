@@ -85,6 +85,27 @@ class ApiController extends Controller
         }
     }
 
+    //update user firebase token
+    //update token
+    public function updateFirebaseToken()
+    {
+        $userId = request('userId');
+        $firebaseToken = request('firebaseToken');
+
+        $user = User::where('id', $userId)->first();
+
+        //check if student available
+        if ($user) {
+            // update firebase token
+            $user->firebaseToken = $firebaseToken;
+            $user->save();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Firebase token updated successfully',
+            ]);
+        }
+    }
+
     //create group
     public function createGroup(Request $request)
     {
@@ -312,7 +333,7 @@ class ApiController extends Controller
                     $message->receiver_read = 0;
                 }
             }
-       
+
 
             return response()->json([
                 'data' => $messages

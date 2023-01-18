@@ -28,6 +28,7 @@ class User extends Authenticatable
         'profile_image',
         'status',
         'role_id',
+        'firebaseToken',
     ];
 
     /**
