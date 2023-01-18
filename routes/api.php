@@ -59,6 +59,9 @@ Route::get('/usersNotInGroup/{my_id}/{group_id}', [ApiController::class, 'fetchU
 //fetch all users in group
 Route::get('/usersInGroup/{my_id}/{group_id}', [ApiController::class, 'fetchUsersInGroup']);
 
+//go to add user to group
+Route::post('/saveGroupMembers', [ApiController::class, 'saveGroupMembers']);
+
 //go to fetch conversation  
 Route::get('/conversations/{id}', [ApiController::class, 'fetchConversations']);
 

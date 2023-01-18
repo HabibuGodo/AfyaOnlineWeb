@@ -157,11 +157,11 @@ class ApiController extends Controller
         ], 200);
     }
 
-    //fetch all users except the logged in user and user in specific group
+    //fetch all users users in specific group
     public function fetchUsersInGroup($my_id, $group_id)
     {
         //validate
-        $user = User::where('id', '!=', $my_id)->whereNotIn('id', function ($query) use ($group_id) {
+        $user = User::where('id', '!=', $my_id)->whereIn('id', function ($query) use ($group_id) {
             $query->select('user_id')->from('group_members')->where('group_id', $group_id);
         })->get();
         return response()->json([
@@ -179,6 +179,29 @@ class ApiController extends Controller
         return response()->json([
             'data' => $user
         ], 200);
+    }
+
+    //save selected users in groupmember table
+    public function saveGroupMembers(Request $request)
+    {
+        $group_id = $request->group_id;
+        $user_id = json_decode($request->user_id);
+
+        //froeach user id check if user is already a member
+        foreach ($user_id as $user) {
+            $check = GroupMember::where('group_id', $group_id)->where('user_id', $user)->first();
+            if (!$check) {
+                //create new group member
+                $groupMember = new GroupMember();
+                $groupMember->group_id = $group_id;
+                $groupMember->user_id = $user;
+                $groupMember->save();
+            }
+        }
+        return response()->json([
+            'status' => 'success',
+            'message' => 'User added successfully',
+        ]);
     }
 
 
