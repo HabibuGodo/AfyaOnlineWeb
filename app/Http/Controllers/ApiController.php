@@ -174,7 +174,7 @@ class ApiController extends Controller
     {
         //validate
         $user = User::where('id', '!=', $my_id)->whereNotIn('id', function ($query) use ($group_id) {
-            $query->select('user_id')->from('group_members')->where('group_id', "!=", $group_id);
+            $query->select('user_id')->from('group_members')->where('group_id', $group_id);
         })->get();
         return response()->json([
             'data' => $user
