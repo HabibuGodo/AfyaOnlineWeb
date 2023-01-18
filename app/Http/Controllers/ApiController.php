@@ -450,22 +450,31 @@ class ApiController extends Controller
             'file' => 'max:5048',
         ]);
 
-        // gete file extension
-        $fileExtension = request()->image->getClientOriginalExtension();
+        $fileUrl = '';
+        $filePath = '';
 
-        // get file name
-        $fileName = time() . '.' . $fileExtension;
+        if (request()->image != null) {
+            // gete file extension
+            $fileExtension = request()->image->getClientOriginalExtension();
 
-        // store file
-        request()->image->storeAs('public/newsFeed_photos', $fileName);
-        // srequest store publicly
-        $fileUrl = 'storage/newsFeed_photos/' . $fileName;
+            // get file name
+            $fileName = time() . '.' . $fileExtension;
 
-        $attachmentName = request()->file->getClientOriginalName();
-        $uploadedAttName = $attachmentName;
+            // store file
+            request()->image->storeAs('public/newsFeed_photos', $fileName);
+            // srequest store publicly
+            $fileUrl = 'storage/newsFeed_photos/' . $fileName;
+        }
 
-        request()->file('file')->storeAs('public/newsFeed_files', $uploadedAttName);
-        $filePath = 'storage/newsFeed_files/'  . $uploadedAttName;
+        if (request()->file != null) {
+            $attachmentName = request()->file->getClientOriginalName();
+            $uploadedAttName = $attachmentName;
+
+            request()->file('file')->storeAs('public/newsFeed_files', $uploadedAttName);
+            $filePath = 'storage/newsFeed_files/'  . $uploadedAttName;
+        }
+
+
 
         $feed = new NewsFeed();
         $feed->title = $request->title;
