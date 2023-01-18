@@ -189,17 +189,17 @@ class ApiController extends Controller
 
 
 
-        // //froeach user id check if user is already a member
-        // foreach ($selectedUsers as $user) {
-        //     $check = GroupMember::where('group_id', $group_id)->where('user_id', $user)->first();
-        //     if (!$check) {
-        //         //create new group member
-        //         $groupMember = new GroupMember();
-        //         $groupMember->group_id = $group_id;
-        //         $groupMember->user_id = $user;
-        //         $groupMember->save();
-        //     }
-        // }
+        //froeach user id check if user is already a member
+        foreach ($selectedUsers as $user) {
+            $check = GroupMember::where('group_id', $group_id)->where('user_id', $user)->first();
+            if (!$check) {
+                //create new group member
+                $groupMember = new GroupMember();
+                $groupMember->group_id = $group_id;
+                $groupMember->user_id = $user;
+                $groupMember->save();
+            }
+        }
         return response()->json([
             'status' => 'success',
             'message' => 'User added successfully',
