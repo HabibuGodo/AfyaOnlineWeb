@@ -185,10 +185,10 @@ class ApiController extends Controller
     public function saveGroupMembers(Request $request)
     {
         $group_id = $request->group_id;
-        $user_id = json_decode($request->user_id);
+        $selectedUsers = json_decode($request->selectedUsers);
 
         //froeach user id check if user is already a member
-        foreach ($user_id as $user) {
+        foreach ($selectedUsers as $user) {
             $check = GroupMember::where('group_id', $group_id)->where('user_id', $user)->first();
             if (!$check) {
                 //create new group member
