@@ -185,7 +185,7 @@ class ApiController extends Controller
     public function saveGroupMembers(Request $request)
     {
         $group_id = $request->group_id;
-        $selectedUsers = json_decode($request->selectedUsers);
+        $selectedUsers = $request->selectedUsers;
 
         //froeach user id check if user is already a member
         foreach ($selectedUsers as $user) {
