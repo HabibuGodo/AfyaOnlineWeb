@@ -147,7 +147,7 @@ class ApiController extends Controller
         ], 200);
     }
 
-    //Send message
+    //fetch all users except the logged in user
     public function fetchUsers($my_id)
     {
         //validate
@@ -156,6 +156,31 @@ class ApiController extends Controller
             'data' => $user
         ], 200);
     }
+
+    //fetch all users except the logged in user and user in specific group
+    public function fetchUsersInGroup($my_id, $group_id)
+    {
+        //validate
+        $user = User::where('id', '!=', $my_id)->whereNotIn('id', function ($query) use ($group_id) {
+            $query->select('user_id')->from('group_members')->where('group_id', $group_id);
+        })->get();
+        return response()->json([
+            'data' => $user
+        ], 200);
+    }
+
+    //fetch all users except the logged in user and user in specific group
+    public function fetchUsersNotInGroup($my_id, $group_id)
+    {
+        //validate
+        $user = User::where('id', '!=', $my_id)->whereNotIn('id', function ($query) use ($group_id) {
+            $query->select('user_id')->from('group_members')->where('group_id', "!=", $group_id);
+        })->get();
+        return response()->json([
+            'data' => $user
+        ], 200);
+    }
+
 
     // fucion send message
     public function sendMessageSingle()

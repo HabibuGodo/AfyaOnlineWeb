@@ -53,6 +53,12 @@ Route::get('/newsfeed', [ApiController::class, 'fetchNewsFeeds']);
 //go to fetch users     
 Route::get('/users/{id}', [ApiController::class, 'fetchUsers']);
 
+//fetch all users not in group
+Route::get('/usersNotInGroup/{my_id}/{group_id}', [ApiController::class, 'fetchUsersNotInGroup']);
+
+//fetch all users in group
+Route::get('/usersInGroup/{my_id}/{group_id}', [ApiController::class, 'fetchUsersInGroup']);
+
 //go to fetch conversation  
 Route::get('/conversations/{id}', [ApiController::class, 'fetchConversations']);
 
