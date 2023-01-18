@@ -446,8 +446,8 @@ class ApiController extends Controller
         $request->validate([
             'title' => 'required',
             'description' => 'required',
-            'image' => 'required|mimes:jpeg,jpg,png|max:10000',
-            'file' => 'mimes:pdf,doc,docx,ppt,pptx,txt,xls,xlsx|max:5048',
+            'image' => 'max:5048',
+            'file' => 'max:5048',
         ]);
 
         // gete file extension
