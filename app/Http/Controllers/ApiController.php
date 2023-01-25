@@ -318,15 +318,32 @@ class ApiController extends Controller
         ], 200);
     }
 
+
     //update messages
-    public function updateMessagesSingleInConvoRead($convo_id, $my_id, $other_user_id)
+    public function updateMessagesSingleInConvoRead()
     {
-        // update read status to 1
-        MessagesSingle::where('conversation_id', $convo_id)->where('sender_id', $other_user_id)->where('receiver_id', $my_id)->update(['receiver_read' => 1]);
+        $senderId = request('senderId');
+        $receiverId = request('receiverId'); // the one who open the converstation
+
+        $messages = MessagesSingle::where('sender_id', $senderId)->where('receiver_id', $receiverId)->get();
+
+        //check if message available
+        if ($messages->count() >= 0) {
+            // loop  toupdate all message to reciveer read yes
+            foreach ($messages as $message) {
+                // update read status to 1
+                $message->receiver_read = 1;
+                $message->save();
+            }
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Message updated successfully',
+            ]);
+        }
 
         return response()->json([
-            'status' => 'success',
-            'message' => 'Message updated successfully',
+            'status' => 'error',
+            'message' => 'Message not found',
         ]);
     }
 
