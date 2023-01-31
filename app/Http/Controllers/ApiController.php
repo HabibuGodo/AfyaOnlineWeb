@@ -161,11 +161,19 @@ class ApiController extends Controller
     public function fetchUsersInGroup($my_id, $group_id)
     {
         //validate
-        $user = User::where('id', '!=', $my_id)->whereIn('id', function ($query) use ($group_id) {
+        $allUsersTokens = [];
+        $users = User::where('id', '!=', $my_id)->whereIn('id', function ($query) use ($group_id) {
             $query->select('user_id')->from('group_members')->where('group_id', $group_id);
         })->get();
+
+
+        foreach ($users as $user) {
+            $allUsersTokens[] = $user->user->firebaseToken;
+        }
+
         return response()->json([
-            'data' => $user
+            'data' => $users,
+            'group_tokens' => $allUsersTokens
         ], 200);
     }
 
