@@ -406,6 +406,7 @@ class ApiController extends Controller
 
             foreach ($messages as $message) {
                 $receiver_read = json_decode($message->receiver_read);
+                $message->sender_name = $message->sender->name;
                 if ($receiver_read == []) {
                     $message->receiver_read = 1;
                     //1 means all group member read the message
