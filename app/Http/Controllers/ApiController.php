@@ -168,7 +168,9 @@ class ApiController extends Controller
 
 
         foreach ($users as $user) {
-            $allUsersTokens[] = $user->firebaseToken;
+            if($user->firebaseToken !=''){
+                $allUsersTokens[] = $user->firebaseToken;
+            }
         }
 
         return response()->json([
