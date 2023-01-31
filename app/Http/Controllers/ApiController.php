@@ -168,7 +168,7 @@ class ApiController extends Controller
 
 
         foreach ($users as $user) {
-            if($user->firebaseToken !=''){
+            if ($user->firebaseToken != '') {
                 $allUsersTokens[] = $user->firebaseToken;
             }
         }
@@ -436,7 +436,7 @@ class ApiController extends Controller
             $receiver_read = json_decode($receiver_read);
             //check if user id is in sender id
             if ($sender_id == $user_id) {
-
+                $message->sender_name = $message->sender->name;
                 if ($receiver_read == []) {
                     $message->receiver_read = 0;
                     array_push($allGroupsMessages, $message);
@@ -448,6 +448,8 @@ class ApiController extends Controller
                 foreach ($receiver_id as $key => $value) {
                     if ($value->id == $user_id) {
                         //check if user id is in receiver read
+                        $message->sender_name = $message->sender->name;
+
                         if ($receiver_read == []) {
                             $message->receiver_read = 0;
                             array_push($allGroupsMessages, $message);
