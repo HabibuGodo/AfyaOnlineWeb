@@ -308,7 +308,7 @@ class ApiController extends Controller
             $conversation->last_message = $lasmessage->message;
             return response()->json([
                 'data' => $lasmessage,
-                // 'totalUnreadAllConvo' => $totalUnreadAllConvo
+                'totalUnreadAllConvo' => $my_id
             ], 200);
             $conversation->lastMsgReceiverId = $lasmessage->receiver_id;
             $conversation->receiver_profile = $user->profile;
