@@ -305,7 +305,7 @@ class ApiController extends Controller
             }
             $conversation->receiver_name = $user->name;
             $conversation->totalUnread = $totalUnread;
-            $conversation->last_message = $lasmessage->message;
+            $conversation->last_message = $lasmessage->message ?? "";
             $conversation->lastMsgReceiverId = $lasmessage->receiver_id;
             $conversation->receiver_profile = $user->profile;
             $conversation->firebaseToken = $user->firebaseToken;
