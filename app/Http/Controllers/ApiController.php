@@ -296,11 +296,6 @@ class ApiController extends Controller
             $lasmessage = MessagesSingle::where('conversation_id', $conversation->id)->orderBy("id", "desc")->first();
             //count unread message for user my_id
 
-            return response()->json([
-                'data' => $lasmessage,
-                'totalUnreadAllConvo' => $my_id
-            ], 200);
-
             $totalUnread = MessagesSingle::where('conversation_id', $conversation->id)->where('receiver_id', $my_id)->where('receiver_read', "No")->count();
 
             if ($conversation->sender_id == $my_id) {
@@ -311,6 +306,13 @@ class ApiController extends Controller
             $conversation->receiver_name = $user->name;
             $conversation->totalUnread = $totalUnread;
             $conversation->last_message = $lasmessage->message;
+
+
+            return response()->json([
+                'data' => $lasmessage->message,
+                'totalUnreadAllConvo' => $my_id
+            ], 200);
+
             $conversation->lastMsgReceiverId = $lasmessage->receiver_id;
             $conversation->receiver_profile = $user->profile;
             $conversation->firebaseToken = $user->firebaseToken;
