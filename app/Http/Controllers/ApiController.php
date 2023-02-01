@@ -31,7 +31,8 @@ class ApiController extends Controller
             //fetch user phone number
             $phone = $hasPhone->phone;
 
-            if ($phone != "0787000116") {
+            if ($phone == "0787000116") {
+
                 $this->sendSMS($phone);
             }
             return response()->json([
@@ -286,8 +287,6 @@ class ApiController extends Controller
     //fetch all conversations
     public function fetchConversations($my_id)
     {
-
-
         //fetch all conversations
         $allConvo = [];
         $conversations = Conversation::where('sender_id', $my_id)->orWhere('receiver_id', $my_id)->orderBy('last_message_time', 'desc')->get();
@@ -295,7 +294,6 @@ class ApiController extends Controller
         foreach ($conversations as $conversation) {
             $lasmessage = MessagesSingle::where('conversation_id', $conversation->id)->orderBy("id", "desc")->first();
             //count unread message for user my_id
-
             $totalUnread = MessagesSingle::where('conversation_id', $conversation->id)->where('receiver_id', $my_id)->where('receiver_read', "No")->count();
 
             if ($conversation->sender_id == $my_id) {
