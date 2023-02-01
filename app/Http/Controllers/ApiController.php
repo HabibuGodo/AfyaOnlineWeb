@@ -286,6 +286,8 @@ class ApiController extends Controller
     //fetch all conversations
     public function fetchConversations($my_id)
     {
+
+
         //fetch all conversations
         $allConvo = [];
         $conversations = Conversation::where('sender_id', $my_id)->orWhere('receiver_id', $my_id)->orderBy('last_message_time', 'desc')->get();
@@ -293,6 +295,12 @@ class ApiController extends Controller
         foreach ($conversations as $conversation) {
             $lasmessage = MessagesSingle::where('conversation_id', $conversation->id)->orderBy("id", "desc")->first();
             //count unread message for user my_id
+
+            return response()->json([
+                'data' => $lasmessage,
+                'totalUnreadAllConvo' => $my_id
+            ], 200);
+
             $totalUnread = MessagesSingle::where('conversation_id', $conversation->id)->where('receiver_id', $my_id)->where('receiver_read', "No")->count();
 
             if ($conversation->sender_id == $my_id) {
