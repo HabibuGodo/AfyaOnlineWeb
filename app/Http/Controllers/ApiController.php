@@ -306,10 +306,10 @@ class ApiController extends Controller
             $conversation->receiver_name = $user->name;
             $conversation->totalUnread = $totalUnread;
             $conversation->last_message = $lasmessage->message ?? "";
-            $conversation->lastMsgReceiverId = $lasmessage->receiver_id;
+            $conversation->lastMsgReceiverId = $lasmessage->receiver_id ?? "";
             $conversation->receiver_profile = $user->profile;
             $conversation->firebaseToken = $user->firebaseToken;
-            $conversation->readStatus = $lasmessage->receiver_read;
+            $conversation->readStatus = $lasmessage->receiver_read ?? "";
 
             array_push($allConvo, $conversation);
         }
