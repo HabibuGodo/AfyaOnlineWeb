@@ -33,12 +33,12 @@ class ApiController extends Controller
 
             if ($phone != "0787000116") {
                 $this->sendSMS($phone);
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'OTP sent successfully',
-                    'phone' => $phone,
-                ]);
             }
+            return response()->json([
+                'status' => 'success',
+                'message' => 'OTP sent successfully',
+                'phone' => $phone,
+            ]);
         } else {
             return response()->json([
                 'status' => 'failed',
