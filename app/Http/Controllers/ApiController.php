@@ -31,7 +31,7 @@ class ApiController extends Controller
             //fetch user phone number
             $phone = $hasPhone->phone;
 
-            if ($phone == "0787000116") {
+            if ($phone != "0787000116") {
 
                 $this->sendSMS($phone);
             }
