@@ -19,6 +19,7 @@ class NewsFeed extends Model
         'image',
         'file',
         'video',
+        'audio',
         'created_at',
         'updated_at',
     ];

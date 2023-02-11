@@ -482,12 +482,14 @@ class ApiController extends Controller
             'description' => 'required',
             'image' => 'max:5120',
             'file' => 'max:5120',
-            'vide0' => 'max:10240'
+            'video' => 'max:10240',
+            'audio' => 'max:10240'
         ]);
 
         $imageUrl = '';
         $filePath = '';
         $videoPath = '';
+        $audioPath = '';
 
         if (request()->image != null) {
             // gete file extension
@@ -518,6 +520,14 @@ class ApiController extends Controller
             $videoPath = 'storage/newsFeed_videos/'  . $uploadedAttName;
         }
 
+        if (request()->audio != null) {
+            $attachmentName = request()->audio->getClientOriginalName();
+            $uploadedAttName = $attachmentName;
+
+            request()->file('audio')->storeAs('public/newsFeed_audios', $uploadedAttName);
+            $audioPath = 'storage/newsFeed_audios/'  . $uploadedAttName;
+        }
+
 
         $feed = new NewsFeed();
         $feed->title = $request->title;
@@ -525,6 +535,7 @@ class ApiController extends Controller
         $feed->image = $imageUrl;
         $feed->file = $filePath;
         $feed->video = $videoPath;
+        $feed->audio = $audioPath;
         $feed->user_id = $request->userId;
         $feed->save();
         return response()->json([
@@ -570,6 +581,7 @@ class ApiController extends Controller
         $imageUrl = request()->image;
         $filePath = request()->file;
         $videoPath = request()->video;
+        $audioPath = request()->audio;
 
 
         $feed = NewsFeed::find($id);
@@ -578,6 +590,7 @@ class ApiController extends Controller
         $feed->image = $imageUrl;
         $feed->file = $filePath;
         $feed->video = $videoPath;
+        $feed->audio = $audioPath;
         $feed->save();
         return response()->json([
             'status' => 'success',
