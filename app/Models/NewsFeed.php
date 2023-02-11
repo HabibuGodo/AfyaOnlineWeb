@@ -18,6 +18,7 @@ class NewsFeed extends Model
         'user_id',
         'image',
         'file',
+        'video',
         'created_at',
         'updated_at',
     ];

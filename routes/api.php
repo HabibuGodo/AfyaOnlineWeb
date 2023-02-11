@@ -50,6 +50,12 @@ Route::post('/createFeed', [ApiController::class, 'createFeed']);
 //go to fetch news feed
 Route::get('/newsfeed', [ApiController::class, 'fetchNewsFeeds']);
 
+//go to edit news feed
+Route::post('/editFeed/{id}', [ApiController::class, 'editNewsFeed']);
+
+// go to delete news feed 
+Route::delete('/deleteFeed/{id}', [ApiController::class, 'deleteNewsFeed']);
+
 //go to fetch users     
 Route::get('/users/{id}', [ApiController::class, 'fetchUsers']);
 

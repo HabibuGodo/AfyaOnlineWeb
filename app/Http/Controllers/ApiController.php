@@ -480,12 +480,14 @@ class ApiController extends Controller
         $request->validate([
             'title' => 'required',
             'description' => 'required',
-            'image' => 'max:5048',
-            'file' => 'max:5048',
+            'image' => 'max:5120',
+            'file' => 'max:5120',
+            'vide0' => 'max:10240'
         ]);
 
-        $fileUrl = '';
+        $imageUrl = '';
         $filePath = '';
+        $videoPath = '';
 
         if (request()->image != null) {
             // gete file extension
@@ -497,7 +499,7 @@ class ApiController extends Controller
             // store file
             request()->image->storeAs('public/newsFeed_photos', $fileName);
             // srequest store publicly
-            $fileUrl = 'storage/newsFeed_photos/' . $fileName;
+            $imageUrl = 'storage/newsFeed_photos/' . $fileName;
         }
 
         if (request()->file != null) {
@@ -508,13 +510,21 @@ class ApiController extends Controller
             $filePath = 'storage/newsFeed_files/'  . $uploadedAttName;
         }
 
+        if (request()->video != null) {
+            $attachmentName = request()->video->getClientOriginalName();
+            $uploadedAttName = $attachmentName;
+
+            request()->file('video')->storeAs('public/newsFeed_videos', $uploadedAttName);
+            $videoPath = 'storage/newsFeed_videos/'  . $uploadedAttName;
+        }
 
 
         $feed = new NewsFeed();
         $feed->title = $request->title;
         $feed->description = $request->description;
-        $feed->image = $fileUrl;
+        $feed->image = $imageUrl;
         $feed->file = $filePath;
+        $feed->video = $videoPath;
         $feed->user_id = $request->userId;
         $feed->save();
         return response()->json([
@@ -535,6 +545,47 @@ class ApiController extends Controller
     }
 
     //delete news feed
+    public function deleteNewsFeed($id)
+    {
+        $feed = NewsFeed::find($id);
+        $feed->delete();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Feed deleted successfully',
+        ]);
+    }
+
+    //edit news feed
+    public function editNewsFeed(Request $request, $id)
+    {
+        //validate
+        // $request->validate([
+        //     'title' => 'required',
+        //     'description' => 'required',
+        //     'image' => 'max:5120',
+        //     'file' => 'max:5120',
+        //     'video' => 'max:10240'
+        // ]);
+
+        $imageUrl = request()->image;
+        $filePath = request()->file;
+        $videoPath = request()->video;
+
+
+        $feed = NewsFeed::find($id);
+        $feed->title = $request->title;
+        $feed->description = $request->description;
+        $feed->image = $imageUrl;
+        $feed->file = $filePath;
+        $feed->video = $videoPath;
+        $feed->save();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Feed updated successfully',
+            'feed' => $feed
+        ]);
+    }
+
 
 
 
