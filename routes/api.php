@@ -51,7 +51,7 @@ Route::post('/createFeed', [ApiController::class, 'createFeed']);
 Route::get('/newsfeed', [ApiController::class, 'fetchNewsFeeds']);
 
 //go to edit news feed
-Route::post('/editFeed/{id}', [ApiController::class, 'editNewsFeed']);
+Route::any('/editFeed/{id}', [ApiController::class, 'editNewsFeed']);
 
 // go to delete news feed 
 Route::delete('/deleteFeed/{id}', [ApiController::class, 'deleteNewsFeed']);
