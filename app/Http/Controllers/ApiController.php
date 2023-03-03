@@ -718,7 +718,7 @@ class ApiController extends Controller
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Profile updated successfully',
-                    'user' => $user
+                    'user' => $check
                 ]);
             }
         }
