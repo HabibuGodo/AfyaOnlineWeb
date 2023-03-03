@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\OTP;
+use Illuminate\Support\Facades\Validator;
 
 class ApiController extends Controller
 {
@@ -669,6 +670,57 @@ class ApiController extends Controller
                 'created' => $created_at,
                 'expire_at' => $expire,
             ]);
+        }
+    }
+
+
+    // update profile
+    public function updateProfile(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'user_id' => 'required',
+                'profile_image' => 'nullable|mimes:jpeg,jpg,png|max:10000',
+            ]
+        );
+
+        if ($validator->fails()) {
+
+            return response()->json([
+                'status' => 'error',
+                'message' => $validator->errors()->first(),
+            ]);
+        } else {
+            // check if email exist
+            $check = User::where('id', request('user_id'))->first();
+
+            if ($check) {
+
+                // check if image uploaded
+                if ($request->hasFile('profile_image')) {
+
+                    // gete file extension
+                    $fileExtension = request()->profile_image->getClientOriginalExtension();
+
+                    // get file name
+                    $fileName = time() . '.' . $fileExtension;
+
+                    // store file
+                    request()->profile_image->storeAs('public/profiles', $fileName);
+                    $fileUrl = 'storage/profiles/' . $fileName;
+                }
+
+                $user = User::where('id', $request->user_id)->update([
+                    'profile_image' => $fileUrl ?? $check->profile_image,
+                ]);
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Profile updated successfully',
+                    'user' => $user
+                ]);
+            }
         }
     }
 }

@@ -23,6 +23,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //update firebaseToken
 Route::post('/updateFirebaseToken', [ApiController::class, 'updateFirebaseToken']);
 
+//go to updateProfile
+Route::post('/updateProfile', [ApiController::class, 'updateProfile']);
+
 
 // send OTP
 Route::post('/send_otp', [ApiController::class, 'sendOTP']);
