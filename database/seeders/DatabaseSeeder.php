@@ -40,7 +40,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin',
             'gender' => 'Male',
             'email' => 'admin@gmail.com',
-            'phone' => '0787000116',
+            'phone' => '0700000000',
             'mrn' => 'mrn/123/2022',
             'profile_image' => 'avatar.png',
             'status' => 'SuperAdmin',

@@ -11,7 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-    protected $table = "users";
+    protected $table = 'users';
 
 
     /**
@@ -25,11 +25,12 @@ class User extends Authenticatable
         'password',
         'gender',
         'phone',
+        'mrn',
         'profile_image',
         'status',
         'role_id',
-        'firebaseToken',
     ];
+      
 
     /**
      * The attributes that should be hidden for serialization.
