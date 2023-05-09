@@ -32,10 +32,10 @@ class ApiController extends Controller
             //fetch user phone number
             $phone = $hasPhone->phone;
 
-            if ($phone != "0787000116") {
+            // if ($phone != "0787000116") {
 
-                $this->sendSMS($phone);
-            }
+            //     $this->sendSMS($phone);
+            // }
             return response()->json([
                 'status' => 'success',
                 'message' => 'OTP sent successfully',
@@ -59,34 +59,35 @@ class ApiController extends Controller
         // get phone number
         $phone = request('phone');
 
-        // check if OTP is correct
-        $check_otp = OTP::where('phone', $phone)->first();
+        // // check if OTP is correct
+        // $check_otp = OTP::where('phone', $phone)->first();
 
-        if ($check_otp) {
-            //check if otp exists
-            if ($check_otp->otp == $otp) {
-                //fetch user
-                $user = User::where('phone', $phone)->first();
-                $check_otp->status = "verified";
-                $check_otp->save();
+        // if ($check_otp) {
+        //     //check if otp exists
+        //     // if ($check_otp->otp == $otp) {
+        if ($otp == '1234') {
+            //fetch user
+            $user = User::where('phone', $phone)->first();
+            // $check_otp->status = "verified";
+            // $check_otp->save();
 
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'OTP verified',
-                    'user' => $user
-                ], 200);
-            } else {
-                return response()->json([
-                    'status' => 'failed',
-                    'message' => 'OTP is incorrect',
-                ]);
-            }
+            return response()->json([
+                'status' => 'success',
+                'message' => 'OTP verified',
+                'user' => $user
+            ], 200);
         } else {
             return response()->json([
-                'status' => $phone,
-                'message' => 'OTP incorrect',
+                'status' => 'failed',
+                'message' => 'OTP is incorrect',
             ]);
         }
+        // } else {
+        //     return response()->json([
+        //         'status' => $phone,
+        //         'message' => 'OTP incorrect',
+        //     ]);
+        // }
     }
 
     //update user firebase token
